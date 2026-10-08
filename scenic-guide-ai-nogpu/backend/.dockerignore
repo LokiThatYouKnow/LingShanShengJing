@@ -1,0 +1,38 @@
+# Python
+__pycache__
+*.pyc
+*.pyo
+.venv
+venv
+*.egg-info
+
+# IDE
+.vscode
+.idea
+
+# Data (mounted at runtime)
+chroma_data
+uploads
+static/audio
+static/avatar
+static/dialogue-video
+static/video
+videos
+
+# Env (injected at runtime)
+.env
+
+# Git
+.git
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Runtime state files
+avatar_uuid.json
+engine_config.json

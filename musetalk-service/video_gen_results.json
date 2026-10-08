@@ -1,0 +1,32 @@
+{
+  "wav2lip": {
+    "opening": "D:\\TalkingV2\\wav2lip-service\\output\\opening.mp4",
+    "idle": [
+      "D:\\TalkingV2\\wav2lip-service\\output\\idle_01.mp4",
+      "D:\\TalkingV2\\wav2lip-service\\output\\idle_02.mp4",
+      "D:\\TalkingV2\\wav2lip-service\\output\\idle_03.mp4",
+      "D:\\TalkingV2\\wav2lip-service\\output\\idle_04.mp4",
+      "D:\\TalkingV2\\wav2lip-service\\output\\idle_05.mp4"
+    ]
+  },
+  "musetalk": {
+    "opening": "D:\\TalkingV2\\musetalk-service\\output\\opening.mp4",
+    "idle": [
+      "D:\\TalkingV2\\musetalk-service\\output\\idle_01.mp4",
+      "D:\\TalkingV2\\musetalk-service\\output\\idle_02.mp4",
+      "D:\\TalkingV2\\musetalk-service\\output\\idle_03.mp4",
+      "D:\\TalkingV2\\musetalk-service\\output\\idle_04.mp4",
+      "D:\\TalkingV2\\musetalk-service\\output\\idle_05.mp4"
+    ]
+  },
+  "sadtalker": {
+    "opening": null,
+    "idle": [
+      "D:\\TalkingV2\\sadtalker-service\\output\\idle_01.mp4",
+      "D:\\TalkingV2\\sadtalker-service\\output\\idle_02.mp4",
+      "D:\\TalkingV2\\sadtalker-service\\output\\idle_03.mp4",
+      "D:\\TalkingV2\\sadtalker-service\\output\\idle_04.mp4",
+      "D:\\TalkingV2\\sadtalker-service\\output\\idle_05.mp4"
+    ]
+  }
+}

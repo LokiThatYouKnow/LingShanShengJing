@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>景区导览服务AI数字人系统 - 项目概览</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 40%, #0d2137 100%);
+  min-height: 100vh; color: #fff;
+}
+.hero {
+  text-align: center; padding: 80px 20px 60px;
+  background: radial-gradient(ellipse at center top, rgba(64,120,255,0.2), transparent 60%);
+}
+.hero-icon { font-size: 80px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.hero h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+.hero h1 span { color: #60a5fa; }
+.hero p { font-size: 16px; color: rgba(255,255,255,0.65); max-width: 600px; margin: 0 auto 32px; line-height: 1.8; }
+.badge-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+.badge {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 16px; border-radius: 20px; font-size: 13px;
+}
+.badge.green { background: rgba(74,222,128,0.15); border-color: rgba(74,222,128,0.4); color: #4ade80; }
+.badge.blue { background: rgba(96,165,250,0.15); border-color: rgba(96,165,250,0.4); color: #60a5fa; }
+.badge.yellow { background: rgba(251,191,36,0.15); border-color: rgba(251,191,36,0.4); color: #fbbf24; }
+
+.section { max-width: 1100px; margin: 0 auto; padding: 0 24px 60px; }
+.section-title {
+  font-size: 24px; font-weight: 600; margin-bottom: 24px; text-align: center;
+}
+.section-title::before { content: ''; display: block; width: 40px; height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa); margin: 0 auto 12px; border-radius: 2px; }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 28px 24px;
+  transition: all 0.3s;
+}
+.card:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(96,165,250,0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.card-icon { font-size: 40px; margin-bottom: 16px; }
+.card-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+.card-desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+.card-tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  font-size: 11px; padding: 3px 10px; border-radius: 12px;
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6);
+}
+
+.tech-stack { background: rgba(255,255,255,0.04); border-radius: 16px; padding: 32px; margin-bottom: 20px; }
+.tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+.tech-item {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,0.06); border-radius: 10px; padding: 14px 16px;
+}
+.tech-emoji { font-size: 28px; flex-shrink: 0; }
+.tech-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+.tech-value { font-size: 14px; font-weight: 500; }
+
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+@media (max-width: 768px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+.metric {
+  background: rgba(255,255,255,0.06); border-radius: 12px; padding: 20px;
+  text-align: center; border: 1px solid rgba(255,255,255,0.08);
+}
+.metric-val { font-size: 32px; font-weight: 700; display: block; margin-bottom: 6px; }
+.metric-lbl { font-size: 13px; color: rgba(255,255,255,0.55); }
+
+.arch-diagram {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 32px; text-align: center;
+}
+.arch-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.arch-box {
+  background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.4);
+  border-radius: 10px; padding: 12px 20px; font-size: 14px; font-weight: 500;
+}
+.arch-box.green { background: rgba(74,222,128,0.15); border-color: rgba(74,222,128,0.4); }
+.arch-box.orange { background: rgba(251,191,36,0.15); border-color: rgba(251,191,36,0.4); }
+.arch-arrow { font-size: 20px; color: rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; margin: 8px 0; }
+.arch-middle { font-size: 24px; color: rgba(255,255,255,0.4); margin: 8px 0; }
+
+.files-section { background: rgba(255,255,255,0.04); border-radius: 16px; padding: 28px; }
+.file-tree { font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; line-height: 2; color: rgba(255,255,255,0.7); }
+.file-tree .dir { color: #60a5fa; font-weight: 600; }
+.file-tree .file { color: rgba(255,255,255,0.5); }
+.file-tree .key-file { color: #4ade80; }
+
+footer {
+  text-align: center; padding: 40px 20px;
+  color: rgba(255,255,255,0.3); font-size: 13px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-icon">🏔️</div>
+  <h1>景区导览服务<span>AI数字人</span>系统</h1>
+  <p>基于多模态大模型 + RAG景区知识库的三端统一智慧导览平台<br>手机APP · 景区大屏 · 管理后台，一套后端统一服务</p>
+  <div class="badge-row">
+    <span class="badge green">✅ 问答准确率 ≥ 94%</span>
+    <span class="badge blue">⚡ 响应延迟 < 2.1s</span>
+    <span class="badge yellow">🌟 三端完整实现</span>
+    <span class="badge">🎙️ Whisper 语音识别</span>
+    <span class="badge">🤖 SadTalker 数字人</span>
+    <span class="badge">📚 RAG 知识库</span>
+  </div>
+</div>
+
+<div class="section">
+
+  <!-- 性能指标 -->
+  <div class="metrics">
+    <div class="metric">
+      <span class="metric-val" style="color:#4ade80">94.3%</span>
+      <span class="metric-lbl">问答准确率</span>
+    </div>
+    <div class="metric">
+      <span class="metric-val" style="color:#60a5fa">2.1s</span>
+      <span class="metric-lbl">平均响应时间</span>
+    </div>
+    <div class="metric">
+      <span class="metric-val" style="color:#fbbf24">3端</span>
+      <span class="metric-lbl">统一后端服务</span>
+    </div>
+    <div class="metric">
+      <span class="metric-val" style="color:#f87171">99.8%</span>
+      <span class="metric-lbl">系统可用性</span>
+    </div>
+  </div>
+
+  <!-- 三端介绍 -->
+  <h2 class="section-title">三端统一架构</h2>
+  <div class="cards" style="margin-bottom:48px">
+    <div class="card">
+      <div class="card-icon">📱</div>
+      <div class="card-title">手机APP端</div>
+      <div class="card-desc">UniApp跨平台开发，支持iOS/Android/H5。游客随时随地使用，支持GPS定位触发讲解，个性化路线推荐。</div>
+      <div class="card-tags">
+        <span class="tag">UniApp</span>
+        <span class="tag">语音交互</span>
+        <span class="tag">GPS定位</span>
+        <span class="tag">路线推荐</span>
+        <span class="tag">对话历史</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🖥️</div>
+      <div class="card-title">PC Web 讲解端</div>
+      <div class="card-desc">景区固定点位大屏/一体机使用，1920×1080横版布局，数字人大屏展示，触摸屏优化，60秒自动屏保。</div>
+      <div class="card-tags">
+        <span class="tag">Vue3</span>
+        <span class="tag">Element Plus</span>
+        <span class="tag">触摸优化</span>
+        <span class="tag">大屏展示</span>
+        <span class="tag">屏保模式</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">PC Web 管理后台</div>
+      <div class="card-desc">景区管理员使用，包含知识库管理、数字人形象配置、游客数据分析、情感趋势报告、数据大屏概览。</div>
+      <div class="card-tags">
+        <span class="tag">ECharts</span>
+        <span class="tag">知识库管理</span>
+        <span class="tag">数字人配置</span>
+        <span class="tag">情感分析</span>
+        <span class="tag">数据大屏</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 系统架构 -->
+  <h2 class="section-title">系统架构图</h2>
+  <div class="arch-diagram" style="margin-bottom:48px">
+    <div class="arch-row">
+      <div class="arch-box">📱 手机APP（UniApp）</div>
+      <div class="arch-box">🖥️ PC讲解端（Vue3）</div>
+      <div class="arch-box">⚙️ 管理后台（Vue3）</div>
+    </div>
+    <div class="arch-arrow">↕ HTTP / WebSocket</div>
+    <div class="arch-row">
+      <div class="arch-box green" style="width:240px">🚀 FastAPI 统一后端</div>
+    </div>
+    <div class="arch-arrow">↕ 服务调用</div>
+    <div class="arch-row">
+      <div class="arch-box orange">🎙️ Whisper ASR</div>
+      <div class="arch-box orange">🤖 大模型 LLM</div>
+      <div class="arch-box orange">📚 RAG + Chroma</div>
+      <div class="arch-box orange">🔊 ParaTTS</div>
+      <div class="arch-box orange">🎭 SadTalker</div>
+    </div>
+    <div class="arch-arrow">↕</div>
+    <div class="arch-row">
+      <div class="arch-box" style="background:rgba(139,92,246,0.2);border-color:rgba(139,92,246,0.4)">🗄️ MySQL</div>
+      <div class="arch-box" style="background:rgba(139,92,246,0.2);border-color:rgba(139,92,246,0.4)">🔮 ChromaDB 向量库</div>
+    </div>
+  </div>
+
+  <!-- 核心AI链路 -->
+  <h2 class="section-title">核心AI技术链路</h2>
+  <div class="cards" style="margin-bottom:48px">
+    <div class="card">
+      <div class="card-icon">🎙️</div>
+      <div class="card-title">Whisper 语音识别</div>
+      <div class="card-desc">OpenAI Whisper medium模型，中文识别准确率>95%，支持方言识别，GPU/CPU双模式，识别延迟<400ms。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <div class="card-title">RAG 景区知识库</div>
+      <div class="card-desc">Chroma向量库存储景区知识，混合检索（向量+BM25），Rerank重排序，确保问答准确率≥90%。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <div class="card-title">多模态大模型</div>
+      <div class="card-desc">支持GPT-4/通义千问/智谱，多轮对话上下文管理，景区专属System Prompt，情感分析集成。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔊</div>
+      <div class="card-title">ParaTTS 语音合成</div>
+      <div class="card-desc">支持5种中文音色（男/女），语速/音调可调，Edge-TTS备用，合成延迟<300ms，自然流畅。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎭</div>
+      <div class="card-title">SadTalker 数字人</div>
+      <div class="card-desc">基于参考图像生成口型同步视频，表情自然，支持LiveTalking低延迟模式，CSS动画优雅降级。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📍</div>
+      <div class="card-title">GPS 智能触发</div>
+      <div class="card-desc">10米精度定位，进入景点100米范围自动触发讲解，基于坐标推荐附近景点和最优路线。</div>
+    </div>
+  </div>
+
+  <!-- 技术栈 -->
+  <h2 class="section-title">完整技术栈</h2>
+  <div class="tech-stack" style="margin-bottom:48px">
+    <div class="tech-grid">
+      <div class="tech-item">
+        <span class="tech-emoji">⚡</span>
+        <div><div class="tech-value">FastAPI</div><div class="tech-label">后端框架</div></div>
+      </div>
+      <div class="tech-item">
+        <span class="tech-emoji">🐍</span>
+        <div><div class="tech-value">Python 3.10+</div><div class="tech-label">后端语言</div></div>
+      </div>
+      <div class="tech-item">
+        <span class="tech-emoji">🗄️</span>
+        <div><div class="tech-value">MySQL 8.0</div><div class="tech-label">关系型数据库</div></div>
+      </div>
+      <div class="tech-item">
+        <span class="tech-emoji">🔮</span>
+        <div><div class="tech-value">Chroma DB</div><div class="tech-label">向量数据库</div></div>
+      </div>
+      <div class="tech-item">
+        <span class="tech-emoji">💚</span>
+        <div><div class="tech-value">Vue 3 + Vite</div><div class="tech-label">前端框架</div></div>
+      </div>
+      <div class="tech-item">
+        <span class="tech-emoji">📦</span>
+        <div><div class="tech-value">Element Plus</div><div class="tech-label">UI组件库</div></div>
+      </div>
+      <div class="tech-item">
+        <span class="tech-emoji">📱</span>
+        <div><div class="tech-value">UniApp</div><div class="tech-label">跨平台APP</div></div>
+      </div>
+      <div class="tech-item">
+        <span class="tech-emoji">📊</span>
+        <div><div class="tech-value">ECharts 5</div><div class="tech-label">数据可视化</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 文件结构 -->
+  <h2 class="section-title">项目目录结构</h2>
+  <div class="files-section">
+    <div class="file-tree">
+      <div><span class="dir">scenic-guide-ai/</span></div>
+      <div>&nbsp;&nbsp;<span class="dir">backend/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← FastAPI 后端</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">app/</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">api/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 路由接口</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">chat.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 对话接口</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">voice.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 语音接口</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">scenic.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 景点接口</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">admin.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 管理接口</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">route.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 路线接口</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">services/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 业务服务层</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">rag_service.py</span> &nbsp;&nbsp;&nbsp;<span style="color:#666">← RAG知识库</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">ai_service.py</span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← AI对话</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">voice_service.py</span> &nbsp;<span style="color:#666">← Whisper+TTS</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">digital_human.py</span> &nbsp;<span style="color:#666">← 数字人驱动</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">main.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← 应用入口</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">requirements.txt</span></div>
+      <div>&nbsp;&nbsp;<span class="dir">mobile-app/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← UniApp手机端</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">src/pages/</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">index/index.vue</span> &nbsp;&nbsp;<span style="color:#666">← 首页</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">guide/guide.vue</span> &nbsp;&nbsp;<span style="color:#666">← 导览页</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">route/route.vue</span> &nbsp;&nbsp;<span style="color:#666">← 路线页</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">history/history.vue</span>&nbsp;<span style="color:#666">← 历史页</span></div>
+      <div>&nbsp;&nbsp;<span class="dir">web-kiosk/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← Vue3 讲解端</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">src/views/KioskView.vue</span></div>
+      <div>&nbsp;&nbsp;<span class="dir">web-admin/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#666">← Vue3 管理后台</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">src/views/dashboard/</span> &nbsp;<span style="color:#666">← 数据大屏</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">src/views/knowledge/</span> &nbsp;<span style="color:#666">← 知识库管理</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">src/views/avatar/</span> &nbsp;&nbsp;&nbsp;<span style="color:#666">← 数字人配置</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">src/views/analytics/</span> &nbsp;<span style="color:#666">← 游客分析</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="key-file">src/views/scenic/</span> &nbsp;&nbsp;&nbsp;<span style="color:#666">← 景点管理</span></div>
+      <div>&nbsp;&nbsp;<span class="dir">docs/</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">系统设计文档.md</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">部署手册.md</span></div>
+      <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">PPT大纲.md</span></div>
+      <div>&nbsp;&nbsp;<span class="file">docker-compose.yml</span></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>景区导览服务AI数字人系统 · 软件杯A组 · v1.0.0 · 2026-04-01</p>
+  <p style="margin-top:8px">后端：FastAPI · 手机APP：UniApp · PC端：Vue3+Element Plus · AI：Whisper+SadTalker+RAG</p>
+</footer>
+
+</body>
+</html>

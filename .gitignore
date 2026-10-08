@@ -1,0 +1,155 @@
+# ============================================================
+#  依赖 / 虚拟环境 / 缓存
+# ============================================================
+node_modules/
+**/node_modules/
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ============================================================
+#  模型权重与二进制大文件（GitHub 单文件硬上限 100MB）
+# ============================================================
+*.pth
+*.pt
+*.bin
+*.safetensors
+*.ckpt
+*.onnx
+*.h5
+*.pb
+*.tflite
+*.whl
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.7z
+*.rar
+*.incomplete
+
+# ============================================================
+#  权重 / 缓存目录
+# ============================================================
+source/
+checkpoints/
+**/checkpoints/
+models/
+**/models/
+weights/
+**/weights/
+gfpgan/
+**/gfpgan/
+gfpgan_weights/
+**/.cache/
+**/huggingface/
+**/torch_hub/
+
+# ============================================================
+#  第三方引擎克隆（体积大且可自行 clone，不入库）
+# ============================================================
+sadtalker-service/SadTalker/
+musetalk-service/MuseTalk/
+wav2lip-service/Wav2Lip/
+wav2lip-src/
+
+# ============================================================
+#  敏感配置（务必不要提交）
+# ============================================================
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+secrets/
+
+# ============================================================
+#  构建产物
+# ============================================================
+dist/
+**/dist/
+build/
+**/build/
+target/
+**/target/
+*.jar
+*.war
+*.class
+*_compiled.js
+
+# ============================================================
+#  运行时产物 / 日志 / 生成媒体
+# ============================================================
+logs/
+**/logs/
+*.log
+output/
+**/output/
+uploads/
+**/uploads/
+generated-images/
+**/generated-images/
+chroma_data/
+**/chroma_data/
+cache/
+**/cache/
+temp/
+**/temp/
+results/
+**/results/
+
+# 生成/示例媒体（体积大，可重新生成）
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.wav
+*.mp3
+*.flac
+*.m4a
+
+# ============================================================
+#  根目录调试产物（截图 / 日志 / 打包）
+# ============================================================
+/*.png
+/*.txt
+/*.log
+/*.sql
+/*.tar.gz
+/*.whl
+.claude/
+.workbuddy/
+local_mysql_dump.sql
+
+# ============================================================
+#  根目录一次性运维脚本（内含服务器地址与口令，不入库）
+#  真正的项目源码在各子目录，不受影响
+# ============================================================
+/*.py
+/*.sh
+/*.ps1
+/*.bat
+/*.mjs
+/*.cmd
+
+# ============================================================
+#  含数据库口令的文件（已确认存在于源码中，不入库）
+#  如需发布，请先把口令改为从环境变量读取
+# ============================================================
+docker-compose.yml
+scenic-guide-ai/docker-compose.yml
+scenic-guide-ai-nogpu/docker-compose.yml
+scenic-guide-ai/backend/app/core/config.py
+scenic-guide-ai-nogpu/backend/app/core/config.py
+scenic-guide-ai/backend/docker_compose_template.py
+scenic-guide-ai-nogpu/backend/docker_compose_template.py
+musetalk-service/test_e2e.py

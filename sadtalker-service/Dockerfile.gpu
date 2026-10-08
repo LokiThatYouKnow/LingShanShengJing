@@ -1,0 +1,61 @@
+# =============================================================================
+# SadTalker 数字人服务 — GPU 模式（需要 NVIDIA Container Toolkit）
+# =============================================================================
+# 前置条件:
+#   1. 安装 NVIDIA Driver + NVIDIA Container Toolkit
+#      https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+#   2. 启动:
+#      docker-compose -f docker-compose.yml -f docker-compose.gpu.yml up -d sadtalker
+# =============================================================================
+
+FROM nvidia/cuda:12.1-runtime-ubuntu22.04
+
+# Python 3.10（使用阿里云镜像加速）
+RUN sed -i 's|archive.ubuntu.com|mirrors.aliyun.com|g' /etc/apt/sources.list && \
+    apt-get update && apt-get install -y --no-install-recommends --fix-missing \
+    python3.10 \
+    python3.10-dev \
+    python3-pip \
+    ffmpeg \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    libgomp1 \
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1 \
+    && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+
+WORKDIR /app
+
+# 先安装 PyTorch CUDA 版本（单独安装确保版本正确）
+RUN pip install --no-cache-dir \
+    torch==2.1.0 \
+    torchvision==0.16.0 \
+    -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+# 安装应用依赖
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+# 安装 SadTalker 子模块依赖
+COPY SadTalker/requirements.txt /app/SadTalker/requirements.txt
+RUN pip install --no-cache-dir -r /app/SadTalker/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+# 复制应用代码
+COPY . /app/
+
+# 创建必要目录
+RUN mkdir -p uploads output avatars cache
+
+EXPOSE 8001
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=5 \
+    CMD curl -f http://localhost:8001/status || exit 1
+
+ENV SADTALKER_DEVICE=cuda
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "sadtalker_api.py"]

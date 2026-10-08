@@ -1,0 +1,24 @@
+{
+  "name": "scenic-guide-kiosk",
+  "version": "1.0.0",
+  "description": "景区AI导览大屏讲解端",
+  "scripts": {
+    "dev": "vite --port 5174",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.6.0",
+    "element-plus": "^2.6.0",
+    "leaflet": "^1.9.4",
+    "pinia": "^2.1.7",
+    "playwright": "^1.59.1",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}

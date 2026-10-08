@@ -1,0 +1,32 @@
+[
+  {
+    "engine": "MuseTalk",
+    "success": true,
+    "audio_duration_s": 23.016,
+    "generation_time_s": 155.9060344696045,
+    "video_duration_s": 23.116,
+    "video_size_kb": 820.8134765625,
+    "gpu_peak_util_pct": 100.0,
+    "gpu_avg_util_pct": 36.94285714285714,
+    "gpu_peak_vram_mb": 9531.0,
+    "gpu_peak_power_w": 162.3,
+    "gpu_peak_temp_c": 82.0,
+    "gpu_samples": 280,
+    "fps_video": 0.14826879587208477
+  },
+  {
+    "engine": "Wav2Lip",
+    "success": true,
+    "audio_duration_s": 23.016,
+    "generation_time_s": 20.73731017112732,
+    "video_duration_s": 23.116,
+    "video_size_kb": 769.1904296875,
+    "gpu_peak_util_pct": 96.0,
+    "gpu_avg_util_pct": 16.333333333333332,
+    "gpu_peak_vram_mb": 4045.0,
+    "gpu_peak_power_w": 120.21,
+    "gpu_peak_temp_c": 73.0,
+    "gpu_samples": 39,
+    "fps_video": 1.114705803657436
+  }
+]

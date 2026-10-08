@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>SadTalker 视频播放测试</title>
+    <style>
+        body { font-family: sans-serif; background: #1a1a2e; color: #fff; padding: 20px; }
+        .video-container { max-width: 600px; margin: 20px auto; border-radius: 16px; overflow: hidden; }
+        video { width: 100%; background: #000; }
+        .log { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 12px;
+               font-family: monospace; font-size: 13px; max-height: 200px; overflow-y: auto; }
+        button { padding: 8px 20px; margin: 5px; border: none; border-radius: 8px; cursor: pointer; }
+        .btn-primary { background: #58a6ff; color: #fff; }
+        .btn-secondary { background: #21262d; color: #c9d1d9; }
+    </style>
+</head>
+<body>
+    <h1>SadTalker 视频播放测试</h1>
+    <div>
+        <button class="btn-primary" onclick="testDirect()">直接访问 SadTalker (8001)</button>
+        <button class="btn-secondary" onclick="testProxy()">通过 Vite 代理 (5174)</button>
+        <button class="btn-secondary" onclick="testFullFlow()">完整流程测试 (8000)</button>
+    </div>
+
+    <div class="video-container">
+        <video id="testVideo" controls playsinline>
+            您的浏览器不支持视频播放。
+        </video>
+    </div>
+
+    <h3>日志</h3>
+    <div class="log" id="log"></div>
+
+    <script>
+        const logEl = document.getElementById('log');
+        const videoEl = document.getElementById('testVideo');
+
+        function log(msg) {
+            const time = new Date().toLocaleTimeString();
+            logEl.innerHTML += `<div>[${time}] ${msg}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(msg);
+        }
+
+        // 视频事件监听
+        videoEl.addEventListener('loadedmetadata', () => log('loadedmetadata: ' + videoEl.videoWidth + 'x' + videoEl.videoHeight + ', duration: ' + videoEl.duration.toFixed(1) + 's'));
+        videoEl.addEventListener('canplay', () => log('canplay: 视频可以播放'));
+        videoEl.addEventListener('playing', () => log('playing: 视频正在播放'));
+        videoEl.addEventListener('ended', () => log('ended: 视频播放结束'));
+        videoEl.addEventListener('error', (e) => log('error: ' + (e.target.error?.message || '未知错误')));
+        videoEl.addEventListener('waiting', () => log('waiting: 视频缓冲中...'));
+
+        async function testDirect() {
+            // 使用之前测试生成的视频
+            const url = 'http://localhost:8001/output/5f538e26892c482995e76edf3f330246.mp4';
+            log('设置 src: ' + url);
+            videoEl.src = url;
+            videoEl.load();
+        }
+
+        async function testProxy() {
+            const url = '/output/5f538e26892c482995e76edf3f330246.mp4';
+            log('设置 src: ' + url);
+            videoEl.src = url;
+            videoEl.load();
+        }
+
+        async function testFullFlow() {
+            log('开始完整流程测试...');
+            try {
+                const resp = await fetch('/api/chat/message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: '你好',
+                        session_id: 'test_page_' + Date.now(),
+                        generate_video: true,
+                        generate_audio: true
+                    })
+                });
+                if (!resp.ok) {
+                    log('请求失败: HTTP ' + resp.status);
+                    return;
+                }
+                const data = await resp.json();
+                log('后端返回: video_url=' + data.video_url + ', answer=' + (data.answer || '').substring(0, 30) + '...');
+
+                if (data.video_url) {
+                    const videoPath = data.video_url.replace('http://localhost:8001', '');
+                    log('播放视频: ' + videoPath);
+                    videoEl.src = videoPath;
+                    videoEl.load();
+                } else {
+                    log('未返回视频URL');
+                }
+            } catch (e) {
+                log('请求异常: ' + e.message);
+            }
+        }
+
+        log('测试页面已加载');
+    </script>
+</body>
+</html>

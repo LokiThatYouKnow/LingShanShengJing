@@ -1,0 +1,80 @@
+2026-07-20 00:19:09,964 [INFO] [启动] edge-tts 已导入
+D:\TalkingV2\sadtalker-service\sadtalker_api.py:363: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+2026-07-20 00:19:09,973 [INFO] [启动] 自动清理完成
+INFO:     Started server process [4652]
+INFO:     Waiting for application startup.
+2026-07-20 00:19:10,073 [INFO] [启动] 正在加载 SadTalker 模型（首次约需 30-60s）...
+2026-07-20 00:19:10,099 [INFO] [启动] torch 2.9.1+cu130 | device=cuda
+2026-07-20 00:19:10,102 [INFO] [启动] GPU: NVIDIA GeForce RTX 4080 Laptop GPU
+2026-07-20 00:19:16,460 [INFO] [启动] 加载 CropAndExtract...
+2026-07-20 00:19:18,494 [INFO] [启动] 加载 Audio2Coeff...
+2026-07-20 00:19:18,961 [INFO] [启动] 加载 AnimateFromCoeff...
+2026-07-20 00:19:21,817 [INFO] [启动] \u2705 全部模型加载完成，耗时 11.7s
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+============================================================
+SadTalker FastAPI 服务启动中...
+端口: 8001
+工作目录: D:\TalkingV2\sadtalker-service
+输出目录: D:\TalkingV2\sadtalker-service\output
+============================================================
+using safetensor as default
+INFO:     127.0.0.1:59398 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63122 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49153 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65514 - "GET /avatar/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59471 - "GET /avatar/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64556 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57672 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63044 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54781 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56639 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52857 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58535 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50277 - "GET /status HTTP/1.1" 200 OK
+2026-07-20 00:23:08,402 [INFO] [换装] 上传图片: filename=test2.png, gender=female
+2026-07-20 00:23:10,000 [INFO] [换装] \u2705 图片已上传: D:\TalkingV2\sadtalker-service\uploads\avatar_images\avatar_2f2c4a84.png, 语音: zh-CN-XiaoxiaoNeural
+INFO:     127.0.0.1:60592 - "POST /avatar/upload-image HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49762 - "GET /avatar-images/avatar_2f2c4a84.png HTTP/1.1" 200 OK
+2026-07-20 00:23:14,694 [INFO] [换装] 上传图片: filename=test2.png, gender=female
+2026-07-20 00:23:16,015 [INFO] [换装] \u2705 图片已上传: D:\TalkingV2\sadtalker-service\uploads\avatar_images\avatar_4a156d37.png, 语音: zh-CN-XiaoxiaoNeural
+INFO:     127.0.0.1:59472 - "POST /avatar/upload-image HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50388 - "GET /avatar-images/avatar_4a156d37.png HTTP/1.1" 200 OK
+2026-07-20 00:25:01,131 [INFO] [换装] 上传图片: filename=base_photo.png, gender=female
+2026-07-20 00:25:01,587 [INFO] [换装] \u2705 图片已上传: D:\TalkingV2\sadtalker-service\uploads\avatar_images\avatar_9abd9379.png, 语音: zh-CN-XiaoxiaoNeural
+INFO:     127.0.0.1:61803 - "POST /avatar/upload-image HTTP/1.1" 200 OK
+2026-07-20 00:25:13,663 [INFO] [换装] 上传图片: filename=base_photo.png, gender=female
+2026-07-20 00:25:14,133 [INFO] [换装] \u2705 图片已上传: D:\TalkingV2\sadtalker-service\uploads\avatar_images\avatar_fa23aa57.png, 语音: zh-CN-XiaoxiaoNeural
+INFO:     127.0.0.1:57265 - "POST /avatar/upload-image HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51058 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60712 - "GET /avatar/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52608 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52616 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50504 - "GET /avatar/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65464 - "GET /avatar/current HTTP/1.1" 200 OK
+2026-07-20 00:30:03,617 [INFO] [换装] 上传图片: filename=test2.png, gender=female
+2026-07-20 00:30:04,842 [INFO] [换装] \u2705 图片已上传: D:\TalkingV2\sadtalker-service\uploads\avatar_images\avatar_1897eafd.png, 语音: zh-CN-XiaoxiaoNeural
+INFO:     127.0.0.1:62558 - "POST /avatar/upload-image HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54651 - "GET /avatar-images/avatar_1897eafd.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53032 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50697 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62109 - "GET /avatar/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52799 - "GET /avatar/current HTTP/1.1" 200 OK
+2026-07-20 00:30:59,775 [INFO] [换装] 上传图片: filename=test2.png, gender=female
+2026-07-20 00:31:00,997 [INFO] [换装] \u2705 图片已上传: D:\TalkingV2\sadtalker-service\uploads\avatar_images\avatar_fcef3bfb.png, 语音: zh-CN-XiaoxiaoNeural
+INFO:     127.0.0.1:53791 - "POST /avatar/upload-image HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55053 - "GET /avatar-images/avatar_fcef3bfb.png HTTP/1.1" 200 OK
+2026-07-20 00:31:31,862 [INFO] [换装] 上传图片: filename=ai-generated-1784478691855.png, gender=female
+2026-07-20 00:31:32,312 [INFO] [换装] \u2705 图片已上传: D:\TalkingV2\sadtalker-service\uploads\avatar_images\avatar_905dc0fe.png, 语音: zh-CN-XiaoxiaoNeural
+INFO:     127.0.0.1:53083 - "POST /avatar/upload-image HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56400 - "GET /avatar-images/avatar_905dc0fe.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62031 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50150 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59984 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58845 - "GET /status HTTP/1.1" 200 OK

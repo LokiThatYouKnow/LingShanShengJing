@@ -1,0 +1,17 @@
+{
+  "wav2lip": {
+    "enabled": true,
+    "name": "Wav2Lip",
+    "port": 8004
+  },
+  "musetalk": {
+    "enabled": true,
+    "name": "MuseTalk",
+    "port": 8003
+  },
+  "sadtalker": {
+    "enabled": true,
+    "name": "SadTalker",
+    "port": 8001
+  }
+}

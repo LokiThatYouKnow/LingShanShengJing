@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>视频播放测试 - SadTalker H.264</title>
+  <style>
+    body { background: #1a1a2e; color: white; font-family: sans-serif; padding: 40px; }
+    h1 { color: #4fc3f7; }
+    .test { margin: 20px 0; padding: 20px; background: #16213e; border-radius: 12px; }
+    .test h3 { margin-top: 0; color: #81d4fa; }
+    video { width: 400px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); background: #000; }
+    .status { margin-top: 10px; font-size: 14px; color: #aaa; }
+    .ok { color: #4caf50; }
+    .fail { color: #f44336; }
+    .info { color: #ffb74d; }
+    .row { display: flex; gap: 20px; flex-wrap: wrap; }
+    .col { flex: 1; min-width: 450px; }
+    hr { border-color: #333; margin: 30px 0; }
+  </style>
+</head>
+<body>
+  <h1>🎬 SadTalker 视频播放测试</h1>
+  <p class="info">验证 SadTalker → H.264 转码 → Vite 代理 → 浏览器播放 完整链路</p>
+
+  <div class="row">
+    <div class="col">
+      <div class="test">
+        <h3>测试1: 本地 H.264（test_combined.mp4）</h3>
+        <video id="v1" controls autoplay>
+          <source src="/test_combined.mp4" type="video/mp4">
+        </video>
+        <div class="status" id="s1">等待加载...</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="test">
+        <h3>测试2: 通过 Vite 代理访问 SadTalker H.264</h3>
+        <video id="v2" controls autoplay>
+          <source src="/output/test_final_h264.mp4" type="video/mp4">
+        </video>
+        <div class="status" id="s2">等待加载...（经过 Vite 5174 → SadTalker 8001 代理）</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col">
+      <div class="test">
+        <h3>测试3: 最新生成的 H.264（22:34 生成）</h3>
+        <video id="v3" controls autoplay>
+          <source src="/output/9341ac66f49348b9.mp4" type="video/mp4">
+        </video>
+        <div class="status" id="s3">等待加载...</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="test">
+        <h3>测试4: 直接访问 SadTalker（绕过代理）</h3>
+        <video id="v4" controls autoplay>
+          <source src="http://localhost:8001/output/test_final_h264.mp4" type="video/mp4">
+        </video>
+        <div class="status" id="s4">等待加载...（直连 SadTalker 8001）</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="test">
+    <h3>测试5: 模拟 Kiosk 前端完整链路</h3>
+    <p>这个测试模拟 KioskView.vue 的实际行为：从后端获取视频 URL，然后播放。</p>
+    <button id="btn5" onclick="runKioskTest()" style="padding:10px 20px; font-size:16px; border-radius:8px; cursor:pointer;">触发 Kiosk 模拟测试</button>
+    <div class="status" id="s5" style="margin-top:15px;">点击按钮开始测试...</div>
+    <div id="kiosk_result" style="margin-top:10px;"></div>
+  </div>
+
+  <script>
+    function setup(id, statusId) {
+      const v = document.getElementById(id);
+      const s = document.getElementById(statusId);
+      v.addEventListener('loadedmetadata', () => {
+        s.innerHTML = `✅ 加载成功: ${v.videoWidth}x${v.videoHeight}, 时长: ${v.duration.toFixed(1)}s, 编码: H.264`;
+        s.className = 'status ok';
+        v.play().then(() => {
+          s.textContent += ' | ▶ 播放中...';
+        }).catch(e => {
+          s.textContent += ' | ⚠️ 自动播放失败: ' + e.message;
+        });
+      });
+      v.addEventListener('error', (e) => {
+        const err = v.error ? v.error.code + ' - ' + v.error.message : '未知';
+        s.textContent = '❌ 加载失败: ' + err;
+        s.className = 'status fail';
+      });
+    }
+
+    setup('v1', 's1');
+    setup('v2', 's2');
+    setup('v3', 's3');
+    setup('v4', 's4');
+
+    async function runKioskTest() {
+      const s5 = document.getElementById('s5');
+      const res = document.getElementById('kiosk_result');
+      s5.textContent = '⏳ 测试中...';
+      s5.className = 'status info';
+
+      // 模拟 KioskView.processQuery() 的视频 URL 处理
+      // 后端返回: http://localhost:8001/output/{sessionId}.mp4
+      // KioskView 转换为: /output/{sessionId}.mp4
+      // Vite 代理到: http://localhost:8001/output/{sessionId}.mp4
+      const videoUrl = 'http://localhost:8001/output/test_final_h264.mp4';
+      const proxiedUrl = videoUrl.replace('http://localhost:8001', ''); // → /output/test_final_h264.mp4
+
+      res.innerHTML = `<p>原始 URL: <code>${videoUrl}</code></p>
+                       <p>代理后 URL: <code>${proxiedUrl}</code></p>`;
+
+      // 直接用 video 元素测试（绕过 fetch）
+      const v = document.createElement('video');
+      v.controls = true;
+      v.width = 400;
+      v.style.borderRadius = '12px';
+      v.style.background = '#000';
+
+      const src = document.createElement('source');
+      src.src = proxiedUrl;
+      src.type = 'video/mp4';
+      v.appendChild(src);
+
+      v.addEventListener('loadedmetadata', () => {
+        s5.innerHTML = `✅ 成功! ${v.videoWidth}x${v.videoHeight} 时长:${v.duration.toFixed(1)}s`;
+        s5.className = 'status ok';
+        res.innerHTML += `<p>✅ <b>视频可正常播放！</b> H.264 转码链路完全正常。</p>`;
+        v.play().catch(() => {});
+        res.parentElement.insertBefore(v, res.nextSibling);
+      });
+      v.addEventListener('error', () => {
+        const err = v.error ? v.error.code + ' - ' + v.error.message : '未知';
+        s5.textContent = '❌ 加载失败: ' + err;
+        s5.className = 'status fail';
+        res.innerHTML += `<p>❌ <b>视频加载失败</b>: ${err}</p>`;
+      });
+      v.load();
+    }
+  </script>
+</body>
+</html>

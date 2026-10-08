@@ -1,0 +1,24 @@
+# Maven 构建产物
+target/
+*.jar
+
+# 日志
+*.log
+*.log.*
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.bak

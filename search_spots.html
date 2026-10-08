@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>灵山胜境景点坐标查询 V2</title>
+<style>
+body { font-family: sans-serif; padding: 20px; background: #1a1a2e; color: #eee; }
+.result { margin: 8px 0; padding: 8px; border-radius: 6px; background: #16213e; }
+.coord { color: #fbbf24; }
+h2 { color: #60a5fa; }
+</style>
+</head>
+<body>
+<h2>灵山胜境 — 景点坐标查询 (BD-09) V2</h2>
+<div id="status">正在加载百度地图API...</div>
+<div id="results"></div>
+
+<script>
+const AK = 'HBY7RG83IWutPHTNDllgXAd0ETkMyqRS';
+
+// Key search queries for anchor points
+const queries = [
+    '无锡灵山胜境售票处',
+    '无锡灵山胜境入口',
+    '无锡灵山胜境南门',
+    '无锡灵山大照壁',
+    '无锡灵山九龙灌浴',
+    '无锡灵山祥符禅寺',
+    '无锡灵山胜境停车场',
+    '无锡灵山胜境游客中心',
+];
+
+// Load Baidu Maps JS API
+const script = document.createElement('script');
+script.src = `https://api.map.baidu.com/api?v=3.0&ak=${AK}&callback=onBMapLoaded`;
+document.head.appendChild(script);
+
+let results = [];
+let completed = 0;
+
+function onBMapLoaded() {
+    document.getElementById('status').textContent = '正在搜索...';
+    const map = new BMap.Map(document.createElement('div'));
+    const local = new BMap.LocalSearch(map, {
+        onSearchComplete: function(result) {
+            completed++;
+            const queryName = result.keyword;
+            const div = document.getElementById('results');
+
+            if (result && result.getNumPois() > 0) {
+                const pois = [];
+                for (let i = 0; i < Math.min(result.getNumPois(), 3); i++) {
+                    const poi = result.getPoi(i);
+                    pois.push({
+                        name: poi.title,
+                        address: poi.address,
+                        lng: poi.point.lng,
+                        lat: poi.point.lat
+                    });
+                }
+                results.push({query: queryName, pois: pois});
+
+                const item = document.createElement('div');
+                item.className = 'result';
+                let html = `<strong>查询: ${queryName}</strong><br>`;
+                pois.forEach((p, i) => {
+                    html += `<span class="coord">[${i}] ${p.name}: BD09 lng=${p.lng.toFixed(6)}, lat=${p.lat.toFixed(6)}</span><br>`;
+                    html += `<span style="color:#94a3b8;font-size:11px">地址: ${p.address || 'N/A'}</span><br>`;
+                });
+                item.innerHTML = html;
+                div.appendChild(item);
+            } else {
+                const item = document.createElement('div');
+                item.className = 'result';
+                item.innerHTML = `<strong>查询: ${queryName}</strong>: 未找到`;
+                item.style.color = '#ef4444';
+                div.appendChild(item);
+            }
+
+            document.getElementById('status').textContent =
+                `进度: ${completed}/${queries.length}`;
+
+            if (completed === queries.length) {
+                document.getElementById('status').innerHTML +=
+                    '<br><br><strong>完成!</strong> 复制以下JSON:<br><pre style="color:#fbbf24;font-size:11px">' +
+                    JSON.stringify(results, null, 2) + '</pre>';
+            }
+        }
+    });
+
+    queries.forEach((q, i) => {
+        setTimeout(() => local.search(q), i * 600);
+    });
+}
+</script>
+</body>
+</html>

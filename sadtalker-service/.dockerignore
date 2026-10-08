@@ -1,0 +1,34 @@
+# PyTorch 安装包（~4GB，不打包进镜像）
+*.whl
+
+# 日志
+*.log
+*.log.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 模型 checkpoint（通过卷挂载）
+checkpoints/
+
+# 临时输出
+output/*
+!output/.gitkeep
+cache/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 备份
+*.bak

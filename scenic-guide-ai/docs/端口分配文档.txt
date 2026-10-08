@@ -1,0 +1,142 @@
+================================================================================
+                      scenic-guide-ai 端口分配文档
+================================================================================
+
+【服务端口】
+
+  端口      服务                    技术栈              说明
+  ──────── ─────────────────────── ─────────────────── ──────────────────────
+  3306     MySQL 8.0               Docker (Docker Desktop)  主数据库
+  6379     Redis 7                 Docker (Docker Desktop)  缓存 / 会话
+  8000     FastAPI 后端            Python (Uvicorn)        AI 对话 / TTS / 景区分析 / 数字人配置
+  8001     SadTalker 服务          Python (FastAPI)        数字人视频生成（需 GPU，开发时可关）
+  8080     Spring Boot 后端        Java 11 (Maven)         管理后台 API / 认证 / 业务 CRUD
+  5174     Kiosk 前端              Vite (Vue 3)            游客端大屏界面
+  5175     Admin 前端              Vite (Vue 3)            管理后台界面
+
+
+【Vite 代理规则 — Kiosk (5174 → 各后端)】
+
+  前端路径              代理目标              备注
+  ──────────────────── ──────────────────── ──────────────────────────
+  /api/*                localhost:8000        Python FastAPI（对话/AI）
+  /static/*             localhost:8000        Python 静态文件（TTS 音频等）
+  /voice/*              localhost:8000        → /api/voice/*
+  /chat/*               localhost:8000        → /api/chat/*
+  /sadtalker-videos/*   localhost:8000        Python 托管预生成视频
+  /sadtalker/*          localhost:8000        → /api/sadtalker/*
+  /spot-images/*        localhost:8080        → /api/spot-images/*（Spring Boot）
+  /output/*             localhost:8001        SadTalker 视频输出
+  /idle-videos/*        localhost:8001        SadTalker 待机视频
+  /generate-idle        localhost:8001        SadTalker 生成待机视频
+  /generate-opening     localhost:8001        SadTalker 生成开场视频
+  /avatar/*             localhost:8001        SadTalker 头像换装
+  /avatar-images/*      localhost:8001        SadTalker 头像静态文件
+
+  ⚠ 排序很重要：/sadtalker-videos 必须放在 /sadtalker 前面，
+    否则 /sadtalker 的 rewrite 会抢先匹配 /sadtalker-videos 路径。
+
+
+【Vite 代理规则 — Admin (5175 → 各后端)】
+
+  前端路径              代理目标              备注
+  ──────────────────── ──────────────────── ──────────────────────────
+  /api/*                localhost:8080        Spring Boot（管理业务）
+  /spot-images/*        localhost:8080        → /api/spot-images/*
+  /sadtalker-api/*      localhost:8001        去前缀转发到 SadTalker
+  /avatar-images/*      localhost:8001        SadTalker 头像文件
+  /sadtalker-videos/*   localhost:8000        Python 托管预生成视频
+  /tts-api/*            localhost:8000        → /api/*（Python TTS/AI）
+
+
+【Spring Boot 内部路径映射】
+
+  上下文路径: /api (application.yml → server.servlet.context-path)
+  端口: 8080
+
+  Controller               RequestMapping          完整 URL（外部）
+  ──────────────────────── ─────────────────────── ─────────────────────
+  AuthController           /admin/auth             /api/admin/auth/*
+  UserController           /admin/users            /api/admin/users/*
+  AdminController          /admin                  /api/admin/*
+  DigitalHumanController   /digital-human          /api/digital-human/*
+  （其他业务控制器）         /scenic, /spot, 等       /api/scenic/*, 等
+
+
+【FastAPI 内部路径映射】
+
+  端口: 8000
+
+  Router                Prefix            说明
+  ──────────────────── ───────────────── ─────────────────────────────
+  chat.router           /api/chat         对话 / 数字人配置
+  voice.router          /api/voice        TTS 语音合成 / STT 识别
+  scenic.router         /api/scenic       景点信息
+  route.router          /api/routes       路线推荐
+  admin.router          /api/admin        管理后台（头像/待机视频等）
+  scene_analysis.router /api/scene        场景分析
+  tourist.router        /api              游客端
+
+
+【CORS 配置要点】
+
+  Spring Boot 需要同时配置两层 CORS：
+
+  1. SecurityConfig — Spring Security 过滤器层
+     corsConfigurationSource() → setAllowedOriginPatterns(...)
+
+  2. WebMvcConfig — Spring MVC 拦截器层
+     addCorsMappings(CorsRegistry) → .allowedOriginPatterns(...)
+
+  两层的 allowedOriginPatterns 必须一致，否则 MVC 层的 DefaultCorsProcessor
+  会在 Security 过滤器放行后仍然返回 403 "Invalid CORS request"。
+
+  推荐模式列表：
+    "http://localhost:*"
+    "http://127.0.0.1:*"
+    "https://*.你的生产域名"
+
+  ⚠ 不要同时使用 setAllowedOrigins("*") + setAllowCredentials(true)，
+    浏览器规范禁止 credentials 配合通配符 origin。
+
+
+【本地开发启动顺序】
+
+  1. Docker Desktop  → MySQL 3306, Redis 6379
+  2. Spring Boot     → 8080 (java -jar 或 mvn spring-boot:run)
+  3. FastAPI         → 8000 (uvicorn main:app --reload)
+  4. (可选) SadTalker → 8001 (需要 GPU)
+  5. Kiosk 前端      → 5174 (npm run dev)
+  6. Admin 前端      → 5175 (npm run dev)
+
+
+【端口冲突排查】
+
+  # 查端口占用
+  netstat -ano | grep ":8000 " | grep LISTENING
+
+  # 查进程名
+  tasklist | grep <PID>
+
+  # 强制结束
+  taskkill /F /PID <PID>
+
+  # 常见问题：
+  - 8000 被其他 Python 进程占用 → 旧的 uvicorn 残留，kill 全部 python.exe
+  - 8080 无 LISTEN → Spring Boot 启动失败，检查 application.yml 数据库连接
+  - 5174/5175 端口冲突 → 改 vite.config.js 里的 server.port
+
+
+【生产部署端口映射 (Docker)】
+
+  容器内    宿主机      说明
+  ──────── ────────── ──────────────────────────────
+  3306     3306       MySQL
+  6379     6379       Redis
+  8000     8000       FastAPI（Docker 容器）
+  -        8080       Spring Boot（宿主机直接运行）
+  -        5174/5175  Vite 构建产物由 Nginx 托管
+
+================================================================================
+  最后更新: 2026-07-14
+================================================================================

@@ -1,0 +1,97 @@
+# =============================================================================
+# Docker 构建排除（无 GPU 云部署版）
+# =============================================================================
+
+# ---- GPU 推理服务（不部署，约 17GB）----
+sadtalker-service/
+musetalk-service/
+wav2lip-service/
+wav2lip-src/
+
+# ---- 大型模型权重 ----
+source/
+gfpgan/
+gfpgan_weights/
+
+# ---- 依赖安装包 ----
+node_modules/
+*.whl
+
+# ---- 日志 ----
+*.log
+*.log.*
+
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# ---- 构建产物 ----
+dist/
+target/
+
+# ---- 数据库数据 ----
+chroma_data/
+
+# ---- IDE ----
+.idea/
+.vscode/
+*.iml
+
+# ---- Claude / Workbuddy（开发工具）----
+.claude/
+.workbuddy/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- 临时文件 ----
+*.tmp
+*.bak
+nul
+
+# ---- 上传文件（通过卷挂载）----
+uploads/
+static/
+
+# ---- 输出文件 ----
+output/
+generated-images/
+
+# ---- 文档 & PPT（不需要部署）----
+PPT/
+docs/
+文档说明/
+截图/
+图片/
+
+# ---- 开发调试文件（根目录）----
+*.png
+*_err*.txt
+*_output*.txt
+api_spec*.json
+test_*.wav
+test_*.mp3
+kiosk_compiled.js
+kiosk_fixed.png
+spots_data_extracted.json
+*.tar.gz
+capture_errors.mjs
+check_syntax.mjs
+search_spots.html
+generate_dict.py
+get_coords.py
+update_docs.py
+kill_ports.ps1
+download_all_spots.ps1
+download_all_spots.sh
+download_spot_images.sh
+fix_spot_images.sql
+migrate-export.sh
+migrate-import.sh
+frontend-update.tar.gz
+package.json
+package-lock.json
