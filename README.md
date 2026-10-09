@@ -50,6 +50,9 @@ MySQL · Redis · Chroma（RAG 知识库）
 3. **配置环境变量**：复制 `.env.example` 为 `.env`，填入数据库口令、大模型 API Key、百度地图 AK 等。
 4. **启动**：`docker compose up -d`（GPU 环境使用 `docker-compose.gpu.yml`）。
 
+> 📖 **完整复现教程见 [REPRODUCE.md](REPRODUCE.md)**：端口总表、四处配置逐项说明、本地/Docker 两种启动顺序、
+> 无 GPU 变体、10 项验证清单与 10 条常见问题（含引擎启动慢、显存不足、权重缺失等）。
+
 ## 未入库内容说明
 
 为控制仓库体积与保护凭据，以下内容不入库：
